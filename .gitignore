@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+.eggs
+*.egg-info/
+
+# Unit test / coverage reports
+.coverage*
+.pytest_cache/
+.tox
+tests-coverage
+tests-report.html
+
+# mypy
+.mypy_cache/
+
+# IDE files
+.idea/
+
+# Project specific generated files
+src/version.py
+
+# Virtual environments
+.venv/

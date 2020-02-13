@@ -1,0 +1,12 @@
+include LICENSE
+include LICENSE.header
+include Makefile
+include MANIFEST.in
+include pyproject.toml
+include README.rst
+include setup.cfg
+include setup.py
+include vulture-whitelist.py
+recursive-include nasty *.py
+recursive-include stubs *.pyi
+recursive-include tests *.py
