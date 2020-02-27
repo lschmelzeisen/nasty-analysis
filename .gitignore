@@ -26,6 +26,7 @@ tests-report.html
 src/version.py
 twitter-crawl/
 twitter-crawl.csv/
+batch.jsonl
 
 # Virtual environments
 .venv/
