@@ -24,6 +24,8 @@ tests-report.html
 
 # Project specific generated files
 src/version.py
+twitter-crawl/
+twitter-crawl.csv/
 
 # Virtual environments
 .venv/
