@@ -112,7 +112,7 @@ publish-twine-upload: ##- Upload to PyPI.
 # ------------------------------------------------------------------------------
 
 clean: ##- Remove all created cache/build files, test/coverage reports, and virtual environments.
-	@rm -rf .coverage* .eggs *.egg-info .mypy_cache .pytest_cache .tox .venv build dist tests-coverage tests-report.html
+	@rm -rf .coverage* .eggs *.egg-info .mypy_cache .pytest_cache .tox .venv build dist src/version.py tests-coverage tests-report.html
 .PHONY: clean
 
 # ------------------------------------------------------------------------------
