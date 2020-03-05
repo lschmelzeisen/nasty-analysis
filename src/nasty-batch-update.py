@@ -29,7 +29,7 @@ QUERIES = [
     "ncov",
 ]
 START_DATE = date(2019, 12, 1)
-END_DATE = date(2020, 2, 25)
+END_DATE = date(2020, 3, 1)
 LANGUAGES = ["de", "en"]
 FILTERS = [nasty.SearchFilter.TOP, nasty.SearchFilter.LATEST]
 
