@@ -14,10 +14,6 @@
 # limitations under the License.
 #
 
-from typing import Iterator, TypeVar
+from typing import Iterable, Set, Union
 
-_T = TypeVar("_T")
-
-def tqdm(
-    iterable: Iterator[_T] = ..., desc: str = ..., total: int = ...
-) -> Iterator[_T]: ...
+def stopwords(langs: Union[str, Iterable[str]]) -> Set[str]: ...

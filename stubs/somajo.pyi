@@ -14,10 +14,20 @@
 # limitations under the License.
 #
 
-from typing import Iterator, TypeVar
+from typing import Iterable, Iterator, Sequence
 
-_T = TypeVar("_T")
+class Token:
+    text: str = ...
+    token_class: str = ...
 
-def tqdm(
-    iterable: Iterator[_T] = ..., desc: str = ..., total: int = ...
-) -> Iterator[_T]: ...
+class SoMaJo:
+    def __init__(
+        self,
+        language: str,
+        *,
+        split_camel_case: bool = ...,
+        split_sentences: bool = ...,
+    ): ...
+    def tokenize_text(
+        self, paragraphs: Iterable[str], *, parallel: int = ...
+    ) -> Iterator[Sequence[Token]]: ...

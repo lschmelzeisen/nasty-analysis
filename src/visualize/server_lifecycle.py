@@ -14,10 +14,10 @@
 # limitations under the License.
 #
 
-from typing import Iterator, TypeVar
+from bokeh.server.contexts import BokehServerContext
 
-_T = TypeVar("_T")
+from src.visualize.frequencies import load_frequencies
 
-def tqdm(
-    iterable: Iterator[_T] = ..., desc: str = ..., total: int = ...
-) -> Iterator[_T]: ...
+
+def on_server_loaded(_server_context: BokehServerContext) -> None:
+    load_frequencies()

@@ -14,10 +14,8 @@
 # limitations under the License.
 #
 
-from typing import Iterator, TypeVar
+from .models import Model
 
-_T = TypeVar("_T")
-
-def tqdm(
-    iterable: Iterator[_T] = ..., desc: str = ..., total: int = ...
-) -> Iterator[_T]: ...
+class curdoc:  # noqa: N801
+    title: str = ...
+    def add_root(self, model: Model) -> None: ...

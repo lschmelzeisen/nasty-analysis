@@ -14,10 +14,16 @@
 # limitations under the License.
 #
 
-from typing import Iterator, TypeVar
+from typing import Sequence, Union
 
-_T = TypeVar("_T")
+from .models import Model
 
-def tqdm(
-    iterable: Iterator[_T] = ..., desc: str = ..., total: int = ...
-) -> Iterator[_T]: ...
+class column(Model):  # noqa: N801
+    def __init__(
+        self, *children: Union[Model, Sequence[Model]], sizing_mode: str = ...
+    ): ...
+
+class row(Model):  # noqa: N801
+    def __init__(
+        self, *children: Union[Model, Sequence[Model]], sizing_mode: str = ...
+    ): ...

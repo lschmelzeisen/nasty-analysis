@@ -14,10 +14,18 @@
 # limitations under the License.
 #
 
-from typing import Iterator, TypeVar
+from bokeh.models import Tabs
+from bokeh.plotting import curdoc
 
-_T = TypeVar("_T")
+from src.visualize.panel_word_frequencies import PanelWordFrequencies
+from src.visualize.panel_word_trends import PanelWordTrends
 
-def tqdm(
-    iterable: Iterator[_T] = ..., desc: str = ..., total: int = ...
-) -> Iterator[_T]: ...
+panel_word_frequencies = PanelWordFrequencies()
+panel_word_trends = PanelWordTrends()
+
+doc = curdoc()
+doc.title = "ncov-media-analysis"
+doc.add_root(Tabs(tabs=[panel_word_frequencies.panel, panel_word_trends.panel]))
+
+panel_word_frequencies.update()
+panel_word_trends.update()

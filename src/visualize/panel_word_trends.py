@@ -14,10 +14,23 @@
 # limitations under the License.
 #
 
-from typing import Iterator, TypeVar
+from bokeh.models import Div, Panel
 
-_T = TypeVar("_T")
 
-def tqdm(
-    iterable: Iterator[_T] = ..., desc: str = ..., total: int = ...
-) -> Iterator[_T]: ...
+class PanelWordTrends:
+    def __init__(self) -> None:
+        description = Div(
+            text="""
+                <h1>Word Trends</h1>
+            """,
+            sizing_mode="fixed",
+            width=350,
+        )
+
+        self.panel = Panel(child=description, title="Word Trends")
+
+    def update(self) -> None:
+        pass
+
+    def on_change(self, _attr: str, _old: object, _new: object) -> None:
+        self.update()

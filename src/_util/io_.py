@@ -14,7 +14,18 @@
 # limitations under the License.
 #
 
-from typing import Iterator
+from contextlib import contextmanager
+from pathlib import Path
+from typing import Iterator, Optional, TextIO
 
-class TweetTokenizer:
-    def tokenize(self, text: str) -> Iterator[str]: ...
+
+@contextmanager
+def _write_file_with_tmp_guard(
+    file: Path, newline: Optional[str] = None
+) -> Iterator[TextIO]:
+    tmp_file = file.parent / (".tmp." + file.name)
+
+    with tmp_file.open("w", encoding="UTF-8", newline=newline) as fin:
+        yield fin
+
+    tmp_file.rename(file)

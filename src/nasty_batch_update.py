@@ -14,45 +14,26 @@
 # limitations under the License.
 #
 
-from datetime import date
-from pathlib import Path
+from nasty import Batch, Request, Search
 
-import nasty  # type: ignore
-
-QUERIES = [
-    "corona",
-    "coronavirus",
-    "wuhan",
-    "covid",
-    "covid19",
-    "sars",
-    "ncov",
-]
-START_DATE = date(2019, 12, 1)
-END_DATE = date(2020, 3, 1)
-LANGUAGES = ["de", "en"]
-FILTERS = [nasty.SearchFilter.TOP, nasty.SearchFilter.LATEST]
+from src.config import BATCH_FILE, END_DATE, FILTERS, LANGUAGES, QUERIES, START_DATE
 
 
-def is_request_in_batch(  # type: ignore
-    request: nasty.Request, batch: nasty.Batch
-) -> bool:
+def is_request_in_batch(request: Request, batch: Batch) -> bool:
     for entry in batch:
         if request == entry.request:
             return True
     return False
 
 
-batch_file = Path("batch.jsonl")
-
-batch = nasty.Batch()
-if batch_file.exists():
-    batch.load(batch_file)
+batch = Batch()
+if BATCH_FILE.exists():
+    batch.load(BATCH_FILE)
 
 for language in LANGUAGES:
     for filter_ in FILTERS:
         for query in QUERIES:
-            request = nasty.Search(
+            request = Search(
                 query,
                 since=START_DATE,
                 until=END_DATE,
@@ -67,4 +48,4 @@ for language in LANGUAGES:
 
                 batch.append(daily_request)
 
-batch.dump(batch_file)
+batch.dump(BATCH_FILE)
