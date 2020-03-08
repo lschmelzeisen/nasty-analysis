@@ -24,9 +24,10 @@ tests-report.html
 
 # Project specific generated files
 src/version.py
-twitter-crawl/
-twitter-crawl.csv/
-twitter-crawl.freqs/
+twitter-crawl
+twitter-crawl.csv
+twitter-crawl.frequencies
+
 batch.jsonl
 
 # Virtual environments
