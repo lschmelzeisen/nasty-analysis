@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-from typing import Sequence
+from typing import Optional, Sequence
 
 from .models import ColumnDataSource, LinearAxis, Model, Title, Tool
 
@@ -32,6 +32,7 @@ class figure(Model):  # noqa: N801
         toolbar_location: str = ...,
         x_axis_label: str = ...,
         y_axis_label: str = ...,
+        active_drag: Optional[str] = ...,
     ): ...
     def line(
         self,

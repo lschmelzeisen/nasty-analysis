@@ -59,19 +59,20 @@ class PanelWordTrends(AbstractPanelFrequencies):
             self._trend_inputs[-1].on_change("value", self.on_change)
 
         self._figure = figure(
-            title="Word Trends",
+            title="Word frequencies",
             toolbar_location="above",
             sizing_mode="stretch_both",
             y_axis_label="Word Frequency",
-        )
-        self._figure.xaxis[0].formatter = DatetimeTickFormatter(
-            days=["%d %b %Y"], months=["%b %Y"]
+            active_drag=None,
         )
         self._figure.add_tools(
             HoverTool(
                 tooltips=[("Date", "@dates{%d %b %Y}"), ("Frequency", "@$name")],
                 formatters={"@dates": "datetime"},
             )
+        )
+        self._figure.xaxis[0].formatter = DatetimeTickFormatter(
+            days=["%d %b %Y"], months=["%b %Y"]
         )
 
         self._lines = []
@@ -119,8 +120,8 @@ class PanelWordTrends(AbstractPanelFrequencies):
     @overrides
     def update(self) -> None:
         self._figure.title.text = (
-            "Word Trends (for {} {} Tweets containing '{}' "
-            "between {:%d %b %Y} and {:%d %b %Y})".format(
+            "Word frequencies for {} {} Tweets containing '{}' "
+            "between {:%d %b %Y} and {:%d %b %Y}".format(
                 self._filter_select.value,
                 LANGUAGES_NATURAL[self._language_select.value],
                 self._query_select.value,
