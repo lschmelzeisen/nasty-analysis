@@ -113,7 +113,6 @@ class PanelWordFrequencies:
                 TableColumn(field="words", title="Word"),
                 TableColumn(field="frequencies", title="Frequency"),
             ],
-            selectable=False,
             sizing_mode="stretch_both",
         )
 

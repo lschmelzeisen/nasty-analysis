@@ -116,5 +116,4 @@ class DataTable(Model):
         sizing_mode: str = ...,
         columns: Sequence[TableColumn] = ...,
         source: ColumnDataSource = ...,
-        selectable: bool = ...,
     ): ...
