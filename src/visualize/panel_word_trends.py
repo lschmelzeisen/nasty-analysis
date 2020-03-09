@@ -64,6 +64,7 @@ class PanelWordTrends(AbstractPanelFrequencies):
             days=["%d %b %Y"], months=["%b %Y"]
         )
         self._lines = []
+        self._circles = []
         for i in range(NUM_TREND_INPUTS):
             self._lines.append(
                 figure_.line(
@@ -72,6 +73,15 @@ class PanelWordTrends(AbstractPanelFrequencies):
                     source=self._source,
                     color=Category10_5[i],
                     line_width=3,
+                )
+            )
+            self._circles.append(
+                figure_.circle(
+                    x="dates",
+                    y="trend" + str(i),
+                    source=self._source,
+                    color=Category10_5[i],
+                    size=6,
                 )
             )
 
@@ -110,10 +120,12 @@ class PanelWordTrends(AbstractPanelFrequencies):
         legend_items = []
         for i in range(NUM_TREND_INPUTS):
             line = self._lines[i]
+            circle = self._circles[i]
             trend = self._trend_inputs[i].value
             line.visible = bool(trend)
+            circle.visible = bool(trend)
             if trend:
-                legend_items.append((trend, [line]))
+                legend_items.append((trend, [line, circle]))
         self._legend.items = legend_items
 
         self._source.data = new_data

@@ -39,5 +39,13 @@ class figure(Model):  # noqa: N801
         color: str = ...,
         line_width: int = ...,
     ) -> Model: ...
+    def circle(
+        self,
+        x: str = ...,
+        y: str = ...,
+        source: ColumnDataSource = ...,
+        color: str = ...,
+        size: int = ...,
+    ) -> Model: ...
     def add_layout(self, obj: Model) -> None: ...
     xaxis: Sequence[LinearAxis] = ...
