@@ -30,7 +30,7 @@ from bokeh.palettes import Category10_5
 from bokeh.plotting import figure
 from overrides import overrides
 
-from src.config import NUM_TREND_INPUTS
+from src.config import LANGUAGES_NATURAL, NUM_TREND_INPUTS
 from src.visualize.abstract_panel_frequencies import AbstractPanelFrequencies
 
 
@@ -57,17 +57,20 @@ class PanelWordTrends(AbstractPanelFrequencies):
             )
             self._trend_inputs[-1].on_change("value", self.on_change)
 
-        figure_ = figure(
-            title="Word Trends", toolbar_location="above", sizing_mode="stretch_both",
+        self._figure = figure(
+            title="Word Trends",
+            toolbar_location="above",
+            sizing_mode="stretch_both",
+            y_axis_label="Word Frequency",
         )
-        figure_.xaxis[0].formatter = DatetimeTickFormatter(
+        self._figure.xaxis[0].formatter = DatetimeTickFormatter(
             days=["%d %b %Y"], months=["%b %Y"]
         )
         self._lines = []
         self._circles = []
         for i in range(NUM_TREND_INPUTS):
             self._lines.append(
-                figure_.line(
+                self._figure.line(
                     x="dates",
                     y="trend" + str(i),
                     source=self._source,
@@ -76,7 +79,7 @@ class PanelWordTrends(AbstractPanelFrequencies):
                 )
             )
             self._circles.append(
-                figure_.circle(
+                self._figure.circle(
                     x="dates",
                     y="trend" + str(i),
                     source=self._source,
@@ -86,7 +89,7 @@ class PanelWordTrends(AbstractPanelFrequencies):
             )
 
         self._legend = Legend(items=[], location="top_left")
-        figure_.add_layout(self._legend)
+        self._figure.add_layout(self._legend)
 
         self.panel = Panel(
             child=row(
@@ -97,7 +100,7 @@ class PanelWordTrends(AbstractPanelFrequencies):
                     sizing_mode="stretch_height",
                     width=350,
                 ),
-                figure_,
+                self._figure,
                 sizing_mode="stretch_both",
             ),
             title="Word Trends",
@@ -105,6 +108,16 @@ class PanelWordTrends(AbstractPanelFrequencies):
 
     @overrides
     def update(self) -> None:
+        self._figure.title.text = (
+            "Word Trends (for {} {} Tweets containing '{}' "
+            "between {:%d %b %Y} and {:%d %b %Y})".format(
+                self._filter_select.value,
+                LANGUAGES_NATURAL[self._language_select.value],
+                self._query_select.value,
+                *self._date_range_slider.value_as_date,
+            )
+        )
+
         new_data: Dict[str, List[Union[date, int]]] = {
             "dates": [],
             **{"trend" + str(i): [] for i in range(NUM_TREND_INPUTS)},

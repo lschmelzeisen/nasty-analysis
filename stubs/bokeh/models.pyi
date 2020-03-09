@@ -144,3 +144,6 @@ class DatetimeTickFormatter:
 
 class LinearAxis:
     formatter: DatetimeTickFormatter = ...
+
+class Title:
+    text: str = ...
