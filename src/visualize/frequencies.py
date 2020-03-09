@@ -25,12 +25,12 @@ from typing_extensions import Final
 from src.config import (
     DAY_RESOLUTION,
     FILTERS,
-    FREQUENCIES_DIR,
     LANGUAGES,
     QUERIES,
     START_DATE,
     TIME_SPAN,
     TOP_K_MOST_FREQUENT_WORDS,
+    frequencies_file,
 )
 
 frequencies: Final[
@@ -58,14 +58,7 @@ def load_frequencies() -> None:
                         frequencies_by_date[index_date] = Counter[str]()
                     frequencies_of_day = frequencies_by_date[index_date]
 
-                    file = (
-                        FREQUENCIES_DIR
-                        / filter_.name.lower()
-                        / language
-                        / "{}-{}.freqs.csv".format(
-                            query.replace(" ", "-"), current_date
-                        )
-                    )
+                    file = frequencies_file(filter_, language, query, current_date)
                     if not file.exists():
                         continue
 
