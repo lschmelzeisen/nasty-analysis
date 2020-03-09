@@ -33,7 +33,6 @@ from stopwordsiso import stopwords
 
 from src.config import (
     DAY_RESOLUTION,
-    END_DATE,
     FILTERS,
     LANGUAGES,
     QUERIES,
@@ -93,14 +92,16 @@ class PanelWordFrequencies:
         )
         self._words_filter.on_change("active", self.on_change)
 
+        end_date = START_DATE + timedelta(
+            days=TIME_SPAN.days - TIME_SPAN.days % DAY_RESOLUTION
+        )
         self._date_range_slider = DateRangeSlider(
             title="Time Period",
             start=START_DATE,
-            end=START_DATE
-            + timedelta(days=TIME_SPAN.days - TIME_SPAN.days % DAY_RESOLUTION),
+            end=end_date,
             step=int(timedelta(days=DAY_RESOLUTION).total_seconds()) * 1000,
             callback_policy="mouseup",
-            value=(START_DATE, END_DATE),
+            value=(START_DATE, end_date),
             sizing_mode="fixed",
             width=350,
             height=40,

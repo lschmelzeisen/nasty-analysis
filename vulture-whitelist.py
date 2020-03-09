@@ -1,3 +1,7 @@
 _.title  # unused attribute (src/visualize/main.py:27)
-_.data  # unused attribute (src/visualize/panel_word_frequencies.py:166)
+_.data  # unused attribute (src/visualize/panel_word_frequencies.py:167)
+_.formatter  # unused attribute (src/visualize/panel_word_trends.py:123)
+_.visible  # unused attribute (src/visualize/panel_word_trends.py:188)
+_.items  # unused attribute (src/visualize/panel_word_trends.py:191)
+_.data  # unused attribute (src/visualize/panel_word_trends.py:193)
 on_server_loaded  # unused function (src/visualize/server_lifecycle.py:22)

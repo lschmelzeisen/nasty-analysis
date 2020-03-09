@@ -14,8 +14,30 @@
 # limitations under the License.
 #
 
-from .models import Model
+from typing import Sequence
+
+from .models import ColumnDataSource, LinearAxis, Model
 
 class curdoc:  # noqa: N801
     title: str = ...
     def add_root(self, model: Model) -> None: ...
+
+class figure(Model):  # noqa: N801
+    def __init__(
+        self,
+        width: int = ...,
+        height: int = ...,
+        sizing_mode: str = ...,
+        title: str = ...,
+        toolbar_location: str = ...,
+    ): ...
+    def line(
+        self,
+        x: str = ...,
+        y: str = ...,
+        source: ColumnDataSource = ...,
+        color: str = ...,
+        line_width: int = ...,
+    ) -> Model: ...
+    def add_layout(self, obj: Model) -> None: ...
+    xaxis: Sequence[LinearAxis] = ...
