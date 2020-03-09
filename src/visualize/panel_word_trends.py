@@ -27,7 +27,7 @@ from bokeh.models import (
     Panel,
     TextInput,
 )
-from bokeh.palettes import Category10_5
+from bokeh.palettes import Category10
 from bokeh.plotting import figure
 from overrides import overrides
 
@@ -84,7 +84,7 @@ class PanelWordTrends(AbstractPanelFrequencies):
                     y="trend" + str(i),
                     name="trend" + str(i),
                     source=self._source,
-                    color=Category10_5[i],
+                    color=Category10[NUM_TREND_INPUTS][i],
                     line_width=3,
                 )
             )
@@ -94,7 +94,7 @@ class PanelWordTrends(AbstractPanelFrequencies):
                     y="trend" + str(i),
                     name="trend" + str(i),
                     source=self._source,
-                    color=Category10_5[i],
+                    color=Category10[NUM_TREND_INPUTS][i],
                     size=9,
                 )
             )
