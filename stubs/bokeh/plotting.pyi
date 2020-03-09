@@ -16,7 +16,7 @@
 
 from typing import Sequence
 
-from .models import ColumnDataSource, LinearAxis, Model, Title
+from .models import ColumnDataSource, LinearAxis, Model, Title, Tool
 
 class curdoc:  # noqa: N801
     title: str = ...
@@ -37,6 +37,7 @@ class figure(Model):  # noqa: N801
         self,
         x: str = ...,
         y: str = ...,
+        name: str = ...,
         source: ColumnDataSource = ...,
         color: str = ...,
         line_width: int = ...,
@@ -45,10 +46,12 @@ class figure(Model):  # noqa: N801
         self,
         x: str = ...,
         y: str = ...,
+        name: str = ...,
         source: ColumnDataSource = ...,
         color: str = ...,
         size: int = ...,
     ) -> Model: ...
     def add_layout(self, obj: Model) -> None: ...
+    def add_tools(self, *tools: Tool) -> None: ...
     title: Title = ...
     xaxis: Sequence[LinearAxis] = ...

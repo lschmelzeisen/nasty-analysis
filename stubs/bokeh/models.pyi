@@ -15,7 +15,7 @@
 #
 
 from datetime import date
-from typing import Callable, Mapping, Sequence, Tuple
+from typing import Callable, Mapping, Sequence, Tuple, Union
 
 class ColumnDataSource:
     def __init__(self, data: Mapping[str, object]): ...
@@ -147,3 +147,12 @@ class LinearAxis:
 
 class Title:
     text: str = ...
+
+class Tool(Model): ...
+
+class HoverTool(Tool):
+    def __init__(
+        self,
+        tooltips: Union[str, Sequence[Tuple[str, str]]] = ...,
+        formatters: Mapping[str, str] = ...,
+    ): ...

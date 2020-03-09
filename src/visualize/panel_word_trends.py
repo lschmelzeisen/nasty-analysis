@@ -22,6 +22,7 @@ from bokeh.models import (
     ColumnDataSource,
     DatetimeTickFormatter,
     Div,
+    HoverTool,
     Legend,
     Panel,
     TextInput,
@@ -66,6 +67,13 @@ class PanelWordTrends(AbstractPanelFrequencies):
         self._figure.xaxis[0].formatter = DatetimeTickFormatter(
             days=["%d %b %Y"], months=["%b %Y"]
         )
+        self._figure.add_tools(
+            HoverTool(
+                tooltips=[("Date", "@dates{%d %b %Y}"), ("Frequency", "@$name")],
+                formatters={"@dates": "datetime"},
+            )
+        )
+
         self._lines = []
         self._circles = []
         for i in range(NUM_TREND_INPUTS):
@@ -73,6 +81,7 @@ class PanelWordTrends(AbstractPanelFrequencies):
                 self._figure.line(
                     x="dates",
                     y="trend" + str(i),
+                    name="trend" + str(i),
                     source=self._source,
                     color=Category10_5[i],
                     line_width=3,
@@ -82,9 +91,10 @@ class PanelWordTrends(AbstractPanelFrequencies):
                 self._figure.circle(
                     x="dates",
                     y="trend" + str(i),
+                    name="trend" + str(i),
                     source=self._source,
                     color=Category10_5[i],
-                    size=6,
+                    size=9,
                 )
             )
 
