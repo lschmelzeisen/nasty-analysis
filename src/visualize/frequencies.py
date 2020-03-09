@@ -24,11 +24,11 @@ from typing_extensions import Final
 
 from src.config import (
     DAY_RESOLUTION,
+    END_DATE,
     FILTERS,
     LANGUAGES,
     QUERIES,
     START_DATE,
-    TIME_SPAN,
     TOP_K_MOST_FREQUENT_WORDS,
     frequencies_file,
 )
@@ -49,7 +49,7 @@ def load_frequencies() -> None:
             for query in QUERIES:
                 frequencies_by_date = {}
 
-                for days in range(TIME_SPAN.days):
+                for days in range((END_DATE - START_DATE).days):
                     current_date = START_DATE + timedelta(days=days)
                     index_date = START_DATE + timedelta(
                         days=days - days % DAY_RESOLUTION

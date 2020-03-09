@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 
-from datetime import timedelta
 from typing import Counter, List, Mapping
 
 from bokeh.layouts import column, row
@@ -22,91 +21,39 @@ from bokeh.models import (
     CheckboxGroup,
     ColumnDataSource,
     DataTable,
-    DateRangeSlider,
     Div,
     Panel,
-    Select,
     TableColumn,
 )
-from nasty import SearchFilter
+from overrides import overrides
 from stopwordsiso import stopwords
 
-from src.config import (
-    DAY_RESOLUTION,
-    FILTERS,
-    LANGUAGES,
-    QUERIES,
-    START_DATE,
-    TIME_SPAN,
-    TOP_K_MOST_FREQUENT_WORDS,
-)
-from src.visualize.frequencies import frequencies
+from src.config import LANGUAGES, TOP_K_MOST_FREQUENT_WORDS
+from src.visualize.abstract_panel_frequencies import AbstractPanelFrequencies
 
 STOPWORDS = {language: stopwords(language) for language in LANGUAGES}
 
 
-class PanelWordFrequencies:
+class PanelWordFrequencies(AbstractPanelFrequencies):
     def __init__(self) -> None:
+        super().__init__()
+
         self._source = ColumnDataSource({"words": [], "frequencies": []})
 
         description = Div(
             text="""
                 <h1>Word Frequencies</h1>
+                <p>To do</p>
             """,
-            sizing_mode="fixed",
-            width=350,
+            sizing_mode="stretch_width",
         )
-
-        self._query_select = Select(
-            title="Query:",
-            options=QUERIES,
-            value=QUERIES[0],
-            sizing_mode="fixed",
-            width=350,
-            height=50,
-        )
-        self._query_select.on_change("value", self.on_change)
-
-        self._language_select = Select(
-            title="Language:",
-            options=LANGUAGES,
-            value=LANGUAGES[0],
-            sizing_mode="fixed",
-            width=350,
-            height=50,
-        )
-        self._language_select.on_change("value", self.on_change)
-
-        self._filter_select = Select(
-            title="Search Filter:",
-            options=[filter_.name.lower() for filter_ in FILTERS],
-            value=FILTERS[0].name.lower(),
-            sizing_mode="fixed",
-            width=350,
-            height=50,
-        )
-        self._filter_select.on_change("value", self.on_change)
 
         self._words_filter = CheckboxGroup(
-            labels=["Filter stopwords", "Keep only hashtags"], active=[0]
+            labels=["Filter stopwords", "Keep only hashtags"],
+            active=[0],
+            sizing_mode="stretch_width",
         )
         self._words_filter.on_change("active", self.on_change)
-
-        end_date = START_DATE + timedelta(
-            days=TIME_SPAN.days - TIME_SPAN.days % DAY_RESOLUTION
-        )
-        self._date_range_slider = DateRangeSlider(
-            title="Time Period",
-            start=START_DATE,
-            end=end_date,
-            step=int(timedelta(days=DAY_RESOLUTION).total_seconds()) * 1000,
-            callback_policy="mouseup",
-            value=(START_DATE, end_date),
-            sizing_mode="fixed",
-            width=350,
-            height=40,
-        )
-        self._date_range_slider.on_change("value_throttled", self.on_change)
 
         frequencies_table = DataTable(
             source=self._source,
@@ -121,12 +68,10 @@ class PanelWordFrequencies:
             child=row(
                 column(
                     description,
-                    self._query_select,
-                    self._language_select,
-                    self._filter_select,
+                    *self._selection_inputs,
                     self._words_filter,
-                    self._date_range_slider,
-                    sizing_mode="fixed",
+                    sizing_mode="stretch_height",
+                    width=350,
                 ),
                 frequencies_table,
                 sizing_mode="stretch_both",
@@ -134,28 +79,18 @@ class PanelWordFrequencies:
             title="Word Frequencies",
         )
 
+    @overrides
     def update(self) -> None:
-        start_date, end_date = self._date_range_slider.value_as_date
-        if end_date <= start_date:
-            end_date = start_date + timedelta(days=1)
-        time_span = end_date - start_date
-
-        query = self._query_select.value
-        language = self._language_select.value
-        filter_ = SearchFilter[self._filter_select.value.upper()]
-
-        time_span_frequencies = Counter[str]()
-        for days in range(0, time_span.days, DAY_RESOLUTION):
-            current_date = start_date + timedelta(days=days)
-            time_span_frequencies.update(
-                frequencies[filter_][language][query][current_date]
-            )
+        selection_frequencies = Counter[str]()
+        for _current_date, date_frequencies in self._iter_frequencies_in_selection():
+            selection_frequencies.update(date_frequencies)
 
         new_data: Mapping[str, List[object]] = {"words": [], "frequencies": []}
-        for i, (word, frequency) in enumerate(time_span_frequencies.most_common()):
+        for i, (word, frequency) in enumerate(selection_frequencies.most_common()):
             if i == TOP_K_MOST_FREQUENT_WORDS:
                 break
 
+            language = self._language_select.value
             if 0 in self._words_filter.active and word in STOPWORDS[language]:
                 continue
             if 1 in self._words_filter.active and not word.startswith("#"):
@@ -165,6 +100,3 @@ class PanelWordFrequencies:
             new_data["frequencies"].append(frequency)
 
         self._source.data = new_data
-
-    def on_change(self, _attr: str, _old: object, _new: object) -> None:
-        self.update()

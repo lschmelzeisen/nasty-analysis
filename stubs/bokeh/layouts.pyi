@@ -20,10 +20,18 @@ from .models import Model
 
 class column(Model):  # noqa: N801
     def __init__(
-        self, *children: Union[Model, Sequence[Model]], sizing_mode: str = ...
+        self,
+        *children: Union[Model, Sequence[Model]],
+        sizing_mode: str = ...,
+        width: int = ...,
+        height: int = ...,
     ): ...
 
 class row(Model):  # noqa: N801
     def __init__(
-        self, *children: Union[Model, Sequence[Model]], sizing_mode: str = ...
+        self,
+        *children: Union[Model, Sequence[Model]],
+        sizing_mode: str = ...,
+        width: int = ...,
+        height: int = ...,
     ): ...

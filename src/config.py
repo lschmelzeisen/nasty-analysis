@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from nasty import SearchFilter
@@ -71,6 +71,9 @@ CSV_FIELDS = [
 
 # src/visualize
 DAY_RESOLUTION = 5
-TIME_SPAN = END_DATE - START_DATE
+START_DATE_RESOLUTION = START_DATE
+END_DATE_RESOLUTION = START_DATE + timedelta(
+    days=(END_DATE - START_DATE).days - (END_DATE - START_DATE).days % DAY_RESOLUTION
+)
 TOP_K_MOST_FREQUENT_WORDS = 100
 NUM_TREND_INPUTS = 5
