@@ -152,6 +152,9 @@ class PanelWordFrequencies:
 
         new_data: Mapping[str, List[object]] = {"words": [], "frequencies": []}
         for i, (word, frequency) in enumerate(time_span_frequencies.most_common()):
+            if i == TOP_K_MOST_FREQUENT_WORDS:
+                break
+
             if 0 in self._words_filter.active and word in STOPWORDS[language]:
                 continue
             if 1 in self._words_filter.active and not word.startswith("#"):
@@ -159,9 +162,6 @@ class PanelWordFrequencies:
 
             new_data["words"].append(word)
             new_data["frequencies"].append(frequency)
-
-            if i == TOP_K_MOST_FREQUENT_WORDS:
-                break
 
         self._source.data = new_data
 
