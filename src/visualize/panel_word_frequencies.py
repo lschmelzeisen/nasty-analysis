@@ -25,18 +25,20 @@ from bokeh.models import (
     Panel,
     TableColumn,
 )
-from overrides import overrides
 from stopwordsiso import stopwords
 
 from src.config import LANGUAGES, TOP_K_MOST_FREQUENT_WORDS
-from src.visualize.abstract_panel_frequencies import AbstractPanelFrequencies
+from src.visualize.data_selection_widget import DataSelectionWidget
 
 STOPWORDS = {language: stopwords(language) for language in LANGUAGES}
 
 
-class PanelWordFrequencies(AbstractPanelFrequencies):
-    def __init__(self) -> None:
+class PanelWordFrequencies:
+    def __init__(self, data_selection_widget: DataSelectionWidget) -> None:
         super().__init__()
+
+        self._data_selection_widget = data_selection_widget
+        self._data_selection_widget.register_on_change_func(self.on_change)
 
         self._source = ColumnDataSource({"words": [], "frequencies": []})
 
@@ -68,7 +70,7 @@ class PanelWordFrequencies(AbstractPanelFrequencies):
             child=row(
                 column(
                     description,
-                    *self._selection_inputs,
+                    *self._data_selection_widget.selection_inputs,
                     self._words_filter,
                     sizing_mode="stretch_height",
                     width=350,
@@ -79,10 +81,12 @@ class PanelWordFrequencies(AbstractPanelFrequencies):
             title="Word Frequencies",
         )
 
-    @overrides
     def update(self) -> None:
         selection_frequencies = Counter[str]()
-        for _current_date, date_frequencies in self._iter_frequencies_in_selection():
+        for (
+            _current_date,
+            date_frequencies,
+        ) in self._data_selection_widget.iter_frequencies_in_selection():
             selection_frequencies.update(date_frequencies)
 
         new_data: Mapping[str, List[object]] = {"words": [], "frequencies": []}
@@ -90,7 +94,7 @@ class PanelWordFrequencies(AbstractPanelFrequencies):
             if i == TOP_K_MOST_FREQUENT_WORDS:
                 break
 
-            language = self._language_select.value
+            language = self._data_selection_widget.language_select.value
             if 0 in self._words_filter.active and word in STOPWORDS[language]:
                 continue
             if 1 in self._words_filter.active and not word.startswith("#"):
@@ -100,3 +104,6 @@ class PanelWordFrequencies(AbstractPanelFrequencies):
             new_data["frequencies"].append(frequency)
 
         self._source.data = new_data
+
+    def on_change(self, _attr: str, _old: object, _new: object) -> None:
+        self.update()

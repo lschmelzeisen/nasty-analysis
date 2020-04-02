@@ -17,11 +17,13 @@
 from bokeh.models import Tabs
 from bokeh.plotting import curdoc
 
+from src.visualize.data_selection_widget import DataSelectionWidget
 from src.visualize.panel_word_frequencies import PanelWordFrequencies
 from src.visualize.panel_word_trends import PanelWordTrends
 
-panel_word_frequencies = PanelWordFrequencies()
-panel_word_trends = PanelWordTrends()
+data_selection_widget = DataSelectionWidget()
+panel_word_frequencies = PanelWordFrequencies(data_selection_widget)
+panel_word_trends = PanelWordTrends(data_selection_widget)
 
 doc = curdoc()
 doc.title = "ncov-media-analysis"

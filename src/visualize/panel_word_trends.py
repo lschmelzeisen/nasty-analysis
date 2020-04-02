@@ -29,15 +29,17 @@ from bokeh.models import (
 )
 from bokeh.palettes import Category10
 from bokeh.plotting import figure
-from overrides import overrides
 
 from src.config import LANGUAGES_NATURAL, NUM_TREND_INPUTS
-from src.visualize.abstract_panel_frequencies import AbstractPanelFrequencies
+from src.visualize.data_selection_widget import DataSelectionWidget
 
 
-class PanelWordTrends(AbstractPanelFrequencies):
-    def __init__(self) -> None:
+class PanelWordTrends:
+    def __init__(self, data_selection_widget: DataSelectionWidget) -> None:
         super().__init__()
+
+        self._data_selection_widget = data_selection_widget
+        self._data_selection_widget.register_on_change_func(self.on_change)
 
         self._source = ColumnDataSource(
             {"dates": [], **{"trend" + str(i): [] for i in range(NUM_TREND_INPUTS)}}
@@ -106,7 +108,7 @@ class PanelWordTrends(AbstractPanelFrequencies):
             child=row(
                 column(
                     description,
-                    *self._selection_inputs,
+                    *self._data_selection_widget.selection_inputs,
                     *self._trend_inputs,
                     sizing_mode="stretch_height",
                     width=350,
@@ -117,15 +119,14 @@ class PanelWordTrends(AbstractPanelFrequencies):
             title="Word Trends",
         )
 
-    @overrides
     def update(self) -> None:
         self._figure.title.text = (
             "Word frequencies for {} {} Tweets containing '{}' "
             "between {:%d %b %Y} and {:%d %b %Y}".format(
-                self._filter_select.value,
-                LANGUAGES_NATURAL[self._language_select.value],
-                self._query_select.value,
-                *self._date_range_slider.value_as_date,
+                self._data_selection_widget.filter_select.value,
+                LANGUAGES_NATURAL[self._data_selection_widget.language_select.value],
+                self._data_selection_widget.query_select.value,
+                *self._data_selection_widget.date_range_slider.value_as_date,
             )
         )
 
@@ -133,7 +134,10 @@ class PanelWordTrends(AbstractPanelFrequencies):
             "dates": [],
             **{"trend" + str(i): [] for i in range(NUM_TREND_INPUTS)},
         }
-        for current_date, date_frequencies in self._iter_frequencies_in_selection():
+        for (
+            current_date,
+            date_frequencies,
+        ) in self._data_selection_widget.iter_frequencies_in_selection():
             new_data["dates"].append(current_date)
             for i in range(NUM_TREND_INPUTS):
                 trend = self._trend_inputs[i].value
@@ -153,3 +157,6 @@ class PanelWordTrends(AbstractPanelFrequencies):
         self._legend.items = legend_items
 
         self._source.data = new_data
+
+    def on_change(self, _attr: str, _old: object, _new: object) -> None:
+        self.update()
