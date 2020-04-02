@@ -48,8 +48,14 @@ class PanelWordTrends:
         description = Div(
             text="""
                 <h1>Word Trends</h1>
-                <p>To do</p>
-            """,
+                <p>Shows Google-Trends-style visualizations of the number of times each
+                word occurs in a selection of Tweets.
+                You can compare up to {} words in this manner by entering them into
+                the <em>Trend</em> fields below.</p>
+                {}
+            """.format(
+                NUM_TREND_INPUTS, self._data_selection_widget.description
+            ),
             sizing_mode="stretch_width",
         )
 

@@ -45,13 +45,20 @@ class PanelWordFrequencies:
         description = Div(
             text="""
                 <h1>Word Frequencies</h1>
-                <p>To do</p>
-            """,
+                <p>Shows the number of times each word occurs in a selection of
+                Tweets (sorted in descending order).</p>
+                {}
+                <p>For the displayed word frequencies, you can adjust to filter out
+                <em>stop words</em> (words with no meaning, for example "the") or not,
+                or to <em>keep only #hashtags</em>.</p>
+            """.format(
+                self._data_selection_widget.description
+            ),
             sizing_mode="stretch_width",
         )
 
         self._words_filter = CheckboxGroup(
-            labels=["Filter stopwords", "Keep only hashtags"],
+            labels=["Filter stop words", "Keep only hashtags"],
             active=[0],
             sizing_mode="stretch_width",
         )
