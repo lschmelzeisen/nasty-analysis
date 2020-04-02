@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-from datetime import date
+from datetime import date, datetime
 from typing import Dict, List, Union
 
 from bokeh.layouts import column, row
@@ -138,7 +138,9 @@ class PanelWordTrends:
             current_date,
             date_frequencies,
         ) in self._data_selection_widget.iter_frequencies_in_selection():
-            new_data["dates"].append(current_date)
+            new_data["dates"].append(
+                datetime(current_date.year, current_date.month, current_date.day)
+            )
             for i in range(NUM_TREND_INPUTS):
                 trend = self._trend_inputs[i].value
                 new_data["trend" + str(i)].append(

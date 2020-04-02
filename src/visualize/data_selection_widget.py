@@ -57,7 +57,6 @@ class DataSelectionWidget:
             end=END_DATE_RESOLUTION,
             step=int(timedelta(days=DAY_RESOLUTION).total_seconds()) * 1000,
             value=(START_DATE_RESOLUTION, END_DATE_RESOLUTION),
-            callback_policy="mouseup",
             sizing_mode="stretch_width",
         )
 
