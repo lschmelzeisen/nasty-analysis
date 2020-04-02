@@ -24,7 +24,7 @@ from nasty import BatchEntry, BatchResults, Search
 from tqdm import tqdm
 
 from src._util.io_ import _write_file_with_tmp_guard
-from src.config import CRAWL_DIR, CSV_FIELDS, csv_file
+from src.config import CRAWL_DIR, CSV_FIELDS, NUM_PROCESSORS, csv_file
 
 twitter_crawl = BatchResults(CRAWL_DIR)
 
@@ -70,7 +70,7 @@ def export_csv_for_batch_entry(entry: BatchEntry) -> None:
 
 
 def main() -> None:
-    with ProcessPoolExecutor() as executor:
+    with ProcessPoolExecutor(NUM_PROCESSORS) as executor:
         results = {
             executor.submit(export_csv_for_batch_entry, entry)
             for entry in twitter_crawl

@@ -24,7 +24,7 @@ from somajo import SoMaJo
 from tqdm import tqdm
 
 from src._util.io_ import _write_file_with_tmp_guard
-from src.config import CRAWL_DIR, frequencies_file
+from src.config import CRAWL_DIR, NUM_PROCESSORS, frequencies_file
 
 tokenizer = {
     "en": SoMaJo("en_PTB", split_sentences=False),
@@ -65,7 +65,7 @@ def calc_freqs_for_batch_entry(entry: BatchEntry) -> None:
 
 
 def main() -> None:
-    with ProcessPoolExecutor() as executor:
+    with ProcessPoolExecutor(NUM_PROCESSORS) as executor:
         results = {
             executor.submit(calc_freqs_for_batch_entry, entry)
             for entry in twitter_crawl

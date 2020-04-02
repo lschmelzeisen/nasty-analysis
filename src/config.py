@@ -29,7 +29,7 @@ QUERIES = [
     "ncov",
 ]
 START_DATE = date(2019, 12, 1)
-END_DATE = date(2020, 3, 16)
+END_DATE = date(2020, 3, 31)
 LANGUAGES = ["de", "en"]
 LANGUAGES_NATURAL = {
     "de": "German",
@@ -61,6 +61,9 @@ def frequencies_file(
         / language
         / "{}-{}.frequencies.csv".format(query.replace(" ", "-"), date_)
     )
+
+
+NUM_PROCESSORS = 4
 
 
 # src/export_csv.py
