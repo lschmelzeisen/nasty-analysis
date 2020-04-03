@@ -14,12 +14,15 @@
 # limitations under the License.
 #
 
+from pathlib import Path
 from typing import Counter, List, Mapping
 
 from bokeh.layouts import column, row
 from bokeh.models import (
+    Button,
     CheckboxGroup,
     ColumnDataSource,
+    CustomJS,
     DataTable,
     Div,
     Panel,
@@ -64,6 +67,14 @@ class PanelWordFrequencies:
         )
         self._words_filter.on_change("active", self.on_change)
 
+        self._export_csv = Button(
+            label="Export CSV", button_type="success", sizing_mode="stretch_width"
+        )
+        with (Path(__file__).parent / "export_csv.js").open(encoding="UTF-8") as fin:
+            self._export_csv.js_on_click(
+                CustomJS(args={"source": self._source}, code=fin.read())
+            )
+
         frequencies_table = DataTable(
             source=self._source,
             columns=[
@@ -79,6 +90,7 @@ class PanelWordFrequencies:
                     description,
                     *self._data_selection_widget.selection_inputs,
                     self._words_filter,
+                    self._export_csv,
                     sizing_mode="stretch_height",
                     width=350,
                 ),
