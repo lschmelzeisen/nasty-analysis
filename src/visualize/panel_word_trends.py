@@ -15,11 +15,14 @@
 #
 
 from datetime import date, datetime
+from pathlib import Path
 from typing import Dict, List, Union
 
 from bokeh.layouts import column, row
 from bokeh.models import (
+    Button,
     ColumnDataSource,
+    CustomJS,
     DatetimeTickFormatter,
     Div,
     HoverTool,
@@ -65,6 +68,19 @@ class PanelWordTrends:
                 TextInput(title="Trend {}:".format(i + 1), sizing_mode="stretch_width")
             )
             self._trend_inputs[-1].on_change("value", self.on_change)
+
+        export_csv = Button(
+            label="Export CSV", button_type="success", sizing_mode="stretch_width"
+        )
+        with (Path(__file__).parent / "export_csv_word_trends.js").open(
+            encoding="UTF-8"
+        ) as fin:
+            export_csv.js_on_click(
+                CustomJS(
+                    args={"source": self._source, "trend_inputs": self._trend_inputs},
+                    code=fin.read(),
+                )
+            )
 
         self._figure = figure(
             title="Word frequencies",
@@ -116,6 +132,7 @@ class PanelWordTrends:
                     description,
                     *self._data_selection_widget.selection_inputs,
                     *self._trend_inputs,
+                    export_csv,
                     sizing_mode="stretch_height",
                     width=350,
                 ),

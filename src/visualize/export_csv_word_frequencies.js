@@ -1,16 +1,16 @@
 function table_to_csv(source) {
-  const columns = Object.keys(source.data).reverse();
-  const num_rows = source.get_length();
+  const columns = ["words", "frequencies"];
   const lines = [columns.join(",")];
 
-  for (let i = 0; i !== num_rows; ++i) {
+  for (let i = 0; i !== source.get_length(); ++i) {
     let row = [];
     for (let j = 0; j !== columns.length; ++j) {
       const column = columns[j];
-      let value = source.data[column][i].toString();
-      value = value.replace(/"/g, '""');
+      let value = source.data[column][i];
       if (column === "words") {
-        value = '"' + value + '"';
+        value = '"' + value.toString().replace(/"/g, '""') + '"';
+      } else {
+        value = value.toString();
       }
       row.push(value);
     }
