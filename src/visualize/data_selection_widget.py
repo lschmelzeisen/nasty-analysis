@@ -35,11 +35,11 @@ class DataSelectionWidget:
     def __init__(self) -> None:
         self.description = """
             <p>In the menu below the selection of Tweets can be adjusted.
-            The selection will contain all Tweets in the given <em>Time Period</em>, which
-            each mention the word in the <em>Query</em> at least once, which were classified
-            by Twitter to be in the selected <em>Language</em>, and which we classified by
-            Twitter to be either <em>top</em>-Tweets as selected in the <em>Serch
-            Filter</em> or all Tweets (if <em>latest</em> is selected).</p>
+            The selection will contain all Tweets in the given <em>Time Period</em>,
+            which each mention the word in the <em>Query</em> at least once, which were
+            classified by Twitter to be in the selected <em>Language</em>, and which we
+            classified by Twitter to be either <em>top</em>-Tweets as selected in the
+            <em>Serch Filter</em> or all Tweets (if <em>latest</em> is selected).</p>
         """
 
         self.query_select = Select(
@@ -91,7 +91,7 @@ class DataSelectionWidget:
 
     def register_on_change_func(
         self, on_change_func: Callable[[str, object, object], None]
-    ):
+    ) -> None:
         self.query_select.on_change("value", on_change_func)
         self.language_select.on_change("value", on_change_func)
         self.filter_select.on_change("value", on_change_func)

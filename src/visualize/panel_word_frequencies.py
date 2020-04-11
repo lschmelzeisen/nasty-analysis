@@ -48,8 +48,8 @@ class PanelWordFrequencies:
         description = Div(
             text="""
                 <h1>Word Frequencies</h1>
-                <p>Shows the number of times each word occurs in a selection of
-                Tweets (sorted in descending order).</p>
+                <p>Shows the number of times each word occurs in a selection of Tweets
+                (sorted in descending order).</p>
                 {}
                 <p>For the displayed word frequencies, you can adjust to filter out
                 <em>stop words</em> (words with no meaning, for example "the") or not,
