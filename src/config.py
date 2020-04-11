@@ -39,6 +39,7 @@ FILTERS = [SearchFilter.TOP, SearchFilter.LATEST]
 
 BATCH_FILE = Path("batch.jsonl")
 CRAWL_DIR = Path("twitter-crawl")
+TOTALS_FILE = Path("twitter-crawl.totals")
 CSV_DIR = Path("twitter-crawl.csv")
 FREQUENCIES_DIR = Path("twitter-crawl.frequencies")
 
