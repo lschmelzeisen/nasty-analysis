@@ -32,7 +32,7 @@ with TOTALS_FILE.open("w", encoding="UTF-8") as fout:
         fout.write(
             json.dumps(
                 {
-                    "filter": str(entry.request.filter),
+                    "filter": str(entry.request.filter.to_json()),
                     "lang": entry.request.lang,
                     "query": entry.request.query,
                     "since": entry.request.since.strftime("%Y-%m-%d"),

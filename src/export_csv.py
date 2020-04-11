@@ -16,7 +16,6 @@
 
 import csv
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from operator import attrgetter
 from pathlib import Path
 from typing import Mapping, cast
 

@@ -25,8 +25,9 @@ tests-report.html
 # Project specific generated files
 src/version.py
 twitter-crawl
-twitter-crawl.csv
-twitter-crawl.frequencies
+twitter-crawl.csv*
+twitter-crawl.frequencies*
+twitter-crawl.totals*
 
 batch.jsonl
 
