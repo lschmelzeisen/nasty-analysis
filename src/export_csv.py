@@ -46,7 +46,7 @@ def export_csv_for_batch_entry(entry: BatchEntry) -> None:
         csv_writer = csv.DictWriter(fout, CSV_FIELDS)
         csv_writer.writeheader()
 
-        for tweet in sorted(twitter_crawl.tweets(entry), key=attrgetter("created_at")):
+        for tweet in twitter_crawl.tweets(entry):
             tweet_json = tweet.to_json()
             user_json = cast(Mapping[str, object], tweet_json["user"])
             tweet_csv = {
