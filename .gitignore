@@ -7,12 +7,12 @@ __pycache__/
 build/
 dist/
 .eggs
-*.egg-info/
+/src/*.egg-info/
 
 # Unit test / coverage reports
 .coverage*
 .pytest_cache/
-.tox
+.nox/
 tests-coverage
 tests-report.html
 
@@ -22,14 +22,8 @@ tests-report.html
 # IDE files
 .idea/
 
-# Project specific generated files
-src/version.py
-twitter-crawl
-twitter-crawl.csv*
-twitter-crawl.frequencies*
-twitter-crawl.totals*
-
-batch.jsonl
-
 # Virtual environments
 .venv/
+
+# Project specific generated files
+/src/*/_version.py

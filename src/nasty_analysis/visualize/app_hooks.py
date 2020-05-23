@@ -13,3 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+from bokeh.server.contexts import BokehServerContext
+
+from nasty_analysis.visualize.frequencies import load_frequencies
+
+
+def on_server_loaded(_server_context: BokehServerContext) -> None:
+    load_frequencies()
