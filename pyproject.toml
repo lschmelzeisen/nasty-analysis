@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]~=3.4"]
+requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]~=4.1"]
 build-backend = "setuptools.build_meta"
 
 [tool.black]
@@ -16,23 +16,26 @@ quiet = true
         # Exclude specific lines from coverage report.
         "# pragma: no cover",
 
-        # Do not complain about missing debug-only code.
+        # Debug-only code.
         "def __repr__",
 
-        # Do not complain if tests do not hit defensive assertion code.
+        # Defensive assertion code.
         "raise AssertionError",
         "raise NotImplementedError",
         "raise RuntimeError",
         "raise ValueError",
 
-        # Do not complain if non-runnable code is not run.
+        # Not able to hit during testing.
         'if __name__ == "__main__":',
 
-        # Do not complain about unimplemented code.
+        # Unimplemented code.
         "pass",
 
-        # Hard to test missing import code.
+        # Missing import code.
         "except ImportError",
+
+        # Type-checking
+        "TYPE_CHECKING",
     ]
     omit = ["rsc/nasty_analysis/__main__.py"]
     skip_covered = true
@@ -47,6 +50,9 @@ multi_line_output = 3
 force_grid_wrap = 0
 include_trailing_comma = true
 use_parentheses = true
+
+[tools.pytest.ini_options]
+testpaths = ["tests"]
 
 [tool.setuptools_scm]
 write_to = "src/nasty_analysis/_version.py"

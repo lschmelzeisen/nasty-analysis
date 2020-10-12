@@ -14,18 +14,17 @@
 # limitations under the License.
 #
 
-from contextlib import contextmanager
-from pathlib import Path
-from typing import Iterator, Optional, TextIO
+from typing import Callable
+
+from bokeh.models import Div
 
 
-@contextmanager
-def _write_file_with_tmp_guard(
-    file: Path, newline: Optional[str] = None
-) -> Iterator[TextIO]:
-    tmp_file = file.parent / (".tmp." + file.name)
+class WordTrendsWidget:
+    def __init__(self):
+        self.widget = Div(text=type(self).__name__)
 
-    with tmp_file.open("w", encoding="UTF-8", newline=newline) as fin:
-        yield fin
+    def on_change(self, *callbacks: Callable[[str, object, object], None]) -> None:
+        pass
 
-    tmp_file.rename(file)
+    def set_enabled(self, enabled: bool) -> None:
+        pass

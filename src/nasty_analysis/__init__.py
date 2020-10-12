@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 
-import logging
 
 __version__ = "dev"
 try:
@@ -27,6 +26,15 @@ __version_info__ = tuple(
     for part in __version__.split(".", maxsplit=4)
 )
 
+
+import logging
+from warnings import filterwarnings
+
 # Don't show log messages in applications that don't configure logging.
 # See https://docs.python.org/3/howto/logging.html#configuring-logging-for-a-library
 logging.getLogger(__name__).addHandler(logging.NullHandler())
+
+# Many elasticsearch/elasticsearch-dsl functiont trigger unavoidable warnings like:
+# "ElasticsearchDeprecationWarning: [types removal] Specifying types in document update
+# requests is deprecated, use the endpoint /{index}/_update/{id} instead."
+filterwarnings("ignore", message=r"\[types removal\]")

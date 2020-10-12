@@ -27,3 +27,6 @@ tests-report.html
 
 # Project specific generated files
 /src/*/_version.py
+
+# Config files
+.config/

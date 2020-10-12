@@ -14,14 +14,15 @@
 # limitations under the License.
 #
 
-from sys import argv
+from typing import cast
 
-from nasty_analysis.cli import NastyAnalysisProgram
+from bokeh.application.application import ServerContext
+
+from nasty_analysis.serve.context import Context
+from nasty_analysis.settings import NastyAnalysisSettings
 
 
-def main() -> None:
-    NastyAnalysisProgram.init(*argv[1:]).run()
-
-
-if __name__ == "__main__":
-    main()
+def on_server_loaded(server_context: ServerContext) -> None:
+    settings = cast(NastyAnalysisSettings, getattr(server_context, "settings"))
+    context = Context(settings)
+    setattr(server_context, "context", context)

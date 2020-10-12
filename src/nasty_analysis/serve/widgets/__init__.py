@@ -13,15 +13,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-from sys import argv
-
-from nasty_analysis.cli import NastyAnalysisProgram
-
-
-def main() -> None:
-    NastyAnalysisProgram.init(*argv[1:]).run()
-
-
-if __name__ == "__main__":
-    main()
